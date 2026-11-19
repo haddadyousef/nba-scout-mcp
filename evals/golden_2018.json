@@ -1,0 +1,41 @@
+{
+  "_generated_by": "scripts/export_artifacts.py + src/scout_mcp/engine.py, commit <fill in after first commit>",
+  "_generated_at": "2026-11-19",
+  "_note": "Real values from this repo's own holdout re-run, not the paper's numbers. The 32 of 60 2018 picks with college stats were excluded from training; these are genuine forecasts, not in-sample replays. Run `uv run python -m scripts._check_golden` (or just call draft_class_board/get_skill_profile yourself) to reproduce.",
+  "draft_class_board_playmaking_2018": {
+    "expect_on_board": ["Jalen Brunson", "Landry Shamet", "Kevin Huerter"],
+    "expect_brunson_model_rank_better_than_draft_pick": true,
+    "observed": {
+      "Jalen Brunson": {"draft_pick": 33, "model_rank": 4, "model_score_top25_prob": 0.995, "confidence": "high"},
+      "Landry Shamet": {"draft_pick": 26, "model_rank": 3, "model_score_top25_prob": 1.0, "confidence": "high"},
+      "Kevin Huerter": {"draft_pick": 19, "model_rank": 7, "model_score_top25_prob": 0.836, "confidence": "high"}
+    }
+  },
+  "trae_young": {
+    "expect": "The paper's case study confirms Trae Young as a top playmaker. Under this repo's genuine out-of-distribution check, the server abstains instead.",
+    "observed": {
+      "skill": "Playmaking",
+      "predicted_tier": null,
+      "confidence": "abstain",
+      "confidence_reason": "distance to nearest archetype centroid (5.02) exceeds the 97.5th percentile of training distances (3.70)",
+      "actual_tier": "Top 25%",
+      "raw_top25_probability": 0.9999999138379069
+    },
+    "interpretation": "The raw probability still says Top 25% with near-certainty, which happens to be correct (actual_tier is Top 25%) -- but the trust layer abstains anyway because his college usage/AST/STL/TOV profile is a genuine statistical outlier even among the training population's own high-usage guards. This is the trust layer working as designed, not a bug: a saturated probability from a model looking at an input unlike anything it trained on is exactly the case abstain exists for."
+  },
+  "shai_gilgeous_alexander": {
+    "expect": "Brief: do not claim anything about Shai Gilgeous-Alexander.",
+    "observed_playmaking": {"draft_pick": 11, "model_rank": 6, "model_score_top25_prob": 0.975, "confidence": "high"},
+    "note": "Reported here only as a board entry, not as a claim about the paper's narrative."
+  },
+  "out_of_distribution_check": {
+    "expect": "A nonsense stat line (e.g. 40 three-point attempts per game on 60% shooting) abstains.",
+    "input": {"PTS": 60, "FGA": 5, "3PA": 40, "Games": 30},
+    "expect_confidence": "abstain"
+  },
+  "ambiguous_name_check": {
+    "expect": "An ambiguous or unmatched name returns candidates instead of guessing.",
+    "input": "Qqnonexistentplayer",
+    "expect_confidence": "abstain"
+  }
+}

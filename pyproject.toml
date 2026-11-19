@@ -1,0 +1,46 @@
+[project]
+name = "nba-scout-mcp"
+version = "0.1.0"
+description = "An MCP server that lets agents consult a published NBA scouting model like a human scout, including when not to trust it."
+readme = "README.md"
+authors = [
+    { name = "Yousef Haddad" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "mcp[cli]>=1.2.0",
+    "pydantic>=2.9",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scikit-learn>=1.5",
+    "imbalanced-learn>=0.12",
+    "xgboost>=2.1",
+    "joblib>=1.4",
+    "pyarrow>=17.0",
+    "rapidfuzz>=3.9",
+    "shap>=0.46",
+]
+
+[project.scripts]
+nba-scout-mcp = "scout_mcp.server:main"
+
+[build-system]
+requires = ["uv_build>=0.13.9,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = "src"
+module-name = "scout_mcp"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.7",
+]
+
+[tool.ruff]
+line-length = 100
+extend-exclude = ["vendor"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
