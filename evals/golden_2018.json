@@ -1,5 +1,5 @@
 {
-  "_generated_by": "scripts/export_artifacts.py + src/scout_mcp/engine.py, commit <fill in after first commit>",
+  "_generated_by": "scripts/export_artifacts.py + src/scout_mcp/engine.py, nba-scout-mcp commit a602141",
   "_generated_at": "2026-11-19",
   "_note": "Real values from this repo's own holdout re-run, not the paper's numbers. The 32 of 60 2018 picks with college stats were excluded from training; these are genuine forecasts, not in-sample replays. Run `uv run python -m scripts._check_golden` (or just call draft_class_board/get_skill_profile yourself) to reproduce.",
   "draft_class_board_playmaking_2018": {
