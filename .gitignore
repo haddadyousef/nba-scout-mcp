@@ -19,3 +19,6 @@ docs/demo.gif
 .pytest_cache/
 .ruff_cache/
 
+# Node (ts-harness)
+node_modules/
+

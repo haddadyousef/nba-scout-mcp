@@ -1,0 +1,63 @@
+name: ts-harness
+
+# Runs the TypeScript MCP client against the live Python server (brief
+# Section 7): spawns it over stdio, lists tools/resources, and checks the
+# golden cases. Training the 4 skill models takes ~100 minutes on a plain
+# runner, so artifacts/ is cached by a hash of the inputs that actually
+# change its output (the two CSVs, the draft board, and the export/feature
+# code) -- a push that doesn't touch those reuses the cached artifacts
+# instead of retraining.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ts-harness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Cache served artifacts
+        id: cache-artifacts
+        uses: actions/cache@v4
+        with:
+          path: artifacts
+          key: >-
+            artifacts-${{ hashFiles('data/**', 'scripts/export_artifacts.py',
+            'src/scout_mcp/features.py', 'config.py') }}
+
+      - name: Install Python dependencies
+        run: uv sync
+
+      - name: Build served artifacts (only on a cache miss)
+        if: steps.cache-artifacts.outputs.cache-hit != 'true'
+        run: uv run python scripts/export_artifacts.py
+
+      - name: Run the Python test suite
+        run: uv run pytest -q
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install ts-harness dependencies
+        working-directory: ts-harness
+        run: npm ci
+
+      - name: Typecheck ts-harness
+        working-directory: ts-harness
+        run: npm run typecheck
+
+      - name: Run the golden eval suite
+        working-directory: ts-harness
+        run: npm run start

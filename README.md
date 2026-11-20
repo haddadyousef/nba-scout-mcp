@@ -226,6 +226,8 @@ nba-scout-mcp/
     player_features.parquet
   tests/
   evals/
+  ts-harness/                  # TypeScript MCP client running the golden eval suite
+  .github/workflows/ts-harness.yml
 ```
 
 `server.py` holds no ML logic; everything is in `engine.py` so it can be
@@ -233,6 +235,25 @@ tested without the MCP protocol in the loop (`tests/test_engine.py` does
 exactly that). Artifacts load once at process start: no training,
 scraping, or network calls happen at request time. Every response
 carries a `model_version` with the git commit it was built from.
+
+## TypeScript client
+
+[`ts-harness/`](ts-harness/) is a second MCP client, written in
+TypeScript against the official `@modelcontextprotocol/sdk`, that spawns
+the server over stdio and runs the same golden checks (draft board,
+abstain, ambiguous name, envelope schema via zod) independently of the
+Python test suite:
+
+```powershell
+cd ts-harness
+npm install
+npm run start
+```
+
+`.github/workflows/ts-harness.yml` runs this, plus the Python test suite,
+on every push. Training the 4 skill models takes about 100 minutes on a
+plain CPU runner, so CI caches `artifacts/` by a hash of the inputs that
+actually change it and only retrains on a cache miss.
 
 ## Recording the demo
 

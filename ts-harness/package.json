@@ -1,0 +1,20 @@
+{
+  "name": "nba-scout-mcp-ts-harness",
+  "private": true,
+  "version": "0.1.0",
+  "description": "TypeScript MCP client that spawns the Python server over stdio and runs the golden eval suite against it.",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/run.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
