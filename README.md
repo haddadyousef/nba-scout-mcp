@@ -3,7 +3,9 @@
 An MCP server that lets AI agents consult a published NBA draft-scouting
 model like a human scout, including when not to trust it.
 
-*Demo GIF: recorded separately in Claude Desktop. See [Recording the demo](#recording-the-demo) below for the two clips to capture; once recorded, drop it in as `docs/demo.gif` and this line becomes `![demo](docs/demo.gif)`.*
+![demo](docs/demo.gif)
+
+*Recorded against the real server through the MCP Inspector: the 2018 Playmaking board surfacing Aaron Holiday, Jevon Carter, and Landry Shamet as undervalued relative to their draft picks, then a nonsense stat line triggering the abstain rule on all four skills. A natural-language version through Claude Desktop is an easy follow-up; see [Recording the demo](#recording-the-demo) below.*
 
 ## Why
 
@@ -257,9 +259,12 @@ actually change it and only retrains on a cache miss.
 
 ## Recording the demo
 
-The GIF above is a placeholder. Record it yourself once the server is
-wired into Claude Desktop (steps above), since I can't drive your desktop
-app from here:
+`docs/demo.gif` was recorded through the MCP Inspector, which exercises
+the real server over the real stdio transport, just with raw tool forms
+instead of an agent's natural language. A second, arguably better clip is
+easy to add once the server is wired into Claude Desktop (steps above),
+since that's a natural-language agent actually choosing tools rather than
+a human filling in a form:
 
 1. Ask: *"Using the scout tools: in the 2018 draft, which second-round
    pick did the model think was a top playmaking prospect? Then compare
