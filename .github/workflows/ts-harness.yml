@@ -2,11 +2,13 @@ name: ts-harness
 
 # Runs the TypeScript MCP client against the live Python server (brief
 # Section 7): spawns it over stdio, lists tools/resources, and checks the
-# golden cases. Training the 4 skill models takes ~100 minutes on a plain
-# runner, so artifacts/ is cached by a hash of the inputs that actually
-# change its output (the two CSVs, the draft board, and the export/feature
-# code) -- a push that doesn't touch those reuses the cached artifacts
-# instead of retraining.
+# golden cases. Training the 4 skill models takes about 3 minutes on
+# these Linux runners (closer to 100 minutes on a Windows laptop, almost
+# certainly a BLAS/threading difference in scikit-learn/XGBoost rather
+# than anything here), so artifacts/ is still cached by a hash of the
+# inputs that actually change its output (the two CSVs, the draft board,
+# and the export/feature code) -- a push that doesn't touch those reuses
+# the cached artifacts instead of retraining.
 
 on:
   push:

@@ -31,7 +31,7 @@ when *not* to trust it.
 git clone https://github.com/haddadyousef/nba-scout-mcp
 cd nba-scout-mcp
 uv sync
-uv run python scripts/export_artifacts.py   # ~100 minutes on a laptop CPU; see below
+uv run python scripts/export_artifacts.py   # ~3 min on Linux; see the timing note below
 uv run nba-scout-mcp                        # starts the stdio MCP server
 ```
 
@@ -42,6 +42,16 @@ run once. `artifacts/` isn't checked into git (the trained models run to
 ~25MB each; see `.gitignore`), so this step is required after a fresh
 clone. It needs nothing beyond the two CSVs already in `data/`: no
 scraping, no network calls.
+
+**Timing varies a lot by platform.** On GitHub's Linux runners (see CI
+below) the whole export takes about 3 minutes. On a Windows laptop, the
+same script took about 100 minutes in testing, almost certainly down to
+scikit-learn/XGBoost's BLAS and threading behavior differing between
+platforms, not anything in this repo's code. Fixed random seeds keep
+results in the same range either way, but not bit-identical: re-running
+on Linux picked `xgb` over `voting` for Rebounding (71.5% vs. the 71.0%
+in the table below), a difference inside normal fold-to-fold noise, not
+a methodology change.
 
 ### Claude Desktop config
 
@@ -253,9 +263,11 @@ npm run start
 ```
 
 `.github/workflows/ts-harness.yml` runs this, plus the Python test suite,
-on every push. Training the 4 skill models takes about 100 minutes on a
-plain CPU runner, so CI caches `artifacts/` by a hash of the inputs that
-actually change it and only retrains on a cache miss.
+on every push. The export takes about 3 minutes on GitHub's Linux
+runners, but CI still caches `artifacts/` by a hash of the inputs that
+actually change it and only retrains on a cache miss, both to save the
+3 minutes on every push and because a Windows laptop running the same
+step took about 100 minutes (see the timing note above).
 
 ## Recording the demo
 
