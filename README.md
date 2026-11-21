@@ -5,7 +5,7 @@ model like a human scout, including when not to trust it.
 
 ![demo](docs/demo.gif)
 
-*Recorded against the real server through the MCP Inspector: the 2018 Playmaking board surfacing Aaron Holiday, Jevon Carter, and Landry Shamet as undervalued relative to their draft picks, then a nonsense stat line triggering the abstain rule on all four skills. A natural-language version through Claude Desktop is an easy follow-up; see [Recording the demo](#recording-the-demo) below.*
+*Recorded against the real server through the MCP Inspector, following one player from name to verdict: `search_players` resolves Jalen Brunson, `get_skill_profile` flags Playmaking as his strongest skill, `explain_tier` shows why (AST_to_TOV, 91st percentile), and `draft_class_board` lands the point: pick 33, second round, model rank 4 out of the whole 2018 class. Brunson went on to make an All-NBA team; a model that never saw him in training ranked him a near-elite playmaker anyway. A natural-language version through Claude Desktop is an easy follow-up; see [Recording the demo](#recording-the-demo) below.*
 
 ## Why
 
